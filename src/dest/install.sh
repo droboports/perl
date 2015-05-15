@@ -21,10 +21,3 @@ find "${prog_dir}" -type f -name "*.default" -print | while read deffile; do
     cp -vf "${deffile}" "${basefile}"
   fi
 done
-
-# symlink /usr/bin/perl
-if [ ! -e "/usr/bin/perl" ]; then
-  ln -s "${prog_dir}/bin/perl" "/usr/bin/perl"
-elif [ -h "/usr/bin/perl" ] && [ "$(readlink /usr/bin/perl)" != "${prog_dir}/bin/perl" ]; then
-  ln -fs "${prog_dir}/bin/perl" "/usr/bin/perl"
-fi
