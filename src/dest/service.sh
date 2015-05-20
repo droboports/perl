@@ -8,7 +8,7 @@
 framework_version="2.1"
 name="perl5"
 version="5.20.2"
-description="Python 5.20.2"
+description="Perl 5.20.2"
 depends=""
 webui=""
 
