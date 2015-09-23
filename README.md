@@ -1,4 +1,4 @@
-# perl5
+# perl5 ![](https://travis-ci.org/droboports/perl5.svg?branch=master)
 
 This is a set of scripts to package a DroboApp from scratch, i.e., download sources, unpackage, compile, install, and package in a TGZ file. The `master` branch contains the Drobo5N version, the `drobofs` branch contains the DroboFS version.
 
