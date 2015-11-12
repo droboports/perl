@@ -7,12 +7,13 @@
 
 framework_version="2.1"
 name="perl5"
-version="5.20.2"
-description="Perl 5.20.2"
+version="5.22.0"
+description="Perl 5 programming language environment"
 depends=""
 webui=""
 
 prog_dir="$(dirname "$(realpath "${0}")")"
+exec_files="perl"
 tmp_dir="/tmp/DroboApps/${name}"
 pidfile="${tmp_dir}/pid.txt"
 logfile="${tmp_dir}/log.txt"
@@ -25,14 +26,19 @@ if [ -z "${FRAMEWORK_VERSION:-}" ]; then
   . "${prog_dir}/libexec/service.subr"
 fi
 
-# symlink /usr/bin/perl
-if [ ! -e "/usr/bin/perl" ]; then
-  ln -s "${prog_dir}/bin/perl" "/usr/bin/perl"
-elif [ -h "/usr/bin/perl" ] && [ "$(readlink /usr/bin/perl)" != "${prog_dir}/bin/perl" ]; then
-  ln -fs "${prog_dir}/bin/perl" "/usr/bin/perl"
-fi
+# symlink exec_files
+_symlink_exec_files() {
+  for exec_file in ${exec_files}; do
+    if [ ! -e "/usr/bin/${exec_file}" ]; then
+      ln -fs "${prog_dir}/bin/${exec_file}" "/usr/bin/${exec_file}"
+    elif [ -h "/usr/bin/${exec_file}" ] && [ "$(readlink /usr/bin/${exec_file})" != "${prog_dir}/bin/${exec_file}" ]; then
+      ln -fs "${prog_dir}/bin/${exec_file}" "/usr/bin/${exec_file}"
+    fi
+  done
+}
 
 start() {
+  _symlink_exec_files
   rm -f "${errorfile}"
   echo "Perl 5 is configured." > "${statusfile}"
   touch "${pidfile}"

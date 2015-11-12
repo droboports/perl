@@ -25,6 +25,34 @@ Each invocation creates a log file with all the generated output.
 * `./build.sh clean` removes everything but downloaded files.
 * `./build.sh package` repackages the DroboApp, without recompiling.
 
+## Build a cross-compiler
+
+First, install the package `qemu-user-static`.
+
+Then, make sure there are no residual files, and use the `BUILD_DEST` variable.
+```
+./build.sh clean
+XPERL="${HOME}/xtools/perl5/5n"
+BUILD_DEST="${XPERL}" ./build.sh
+```
+
+And set the `QEMU_LD_PREFIX` to use the python cross-compiler.
+```
+. crosscompile.sh
+export QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc"
+export HPERL="/mnt/DroboFS/Shares/DroboApps/perl5"
+export XPERL="${HOME}/xtools/perl5/5n"
+XPERL_VERSION="$("${XPERL}/bin/perl" -e 'print $^V' | cut -c2-)"
+export PERL5LIB="${HOME}/xtools/perl5/5n/lib/perl5/${XPERL_VERSION}:${HPERL}/lib/perl5/${XPERL_VERSION}:${DEST}/lib/perl5/site_perl/${XPERL_VERSION}:${DEST}/lib/perl5/site_perl/${XPERL_VERSION}/arm-linux"
+
+"${XPERL}/bin/perl" Makefile.PL PREFIX="${DEST}" \
+  CCCDLFLAGS="${CFLAGS} ${CPPFLAGS}" \
+  LDFLAGS="${LDFLAGS} -Wl,-rpath,${HPERL}/lib -L${XPERL}/lib" \
+  LDDLFLAGS="-shared ${LDFLAGS} -Wl,-rpath,${HPERL}/lib -L${XPERL}/lib"
+make
+make install
+```
+
 ## Acknowledgements
 
 Many thanks to the people behind [perl-cross](https://github.com/arsv/perl-cross) for making cross-compiling perl a reality.
