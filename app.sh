@@ -16,7 +16,6 @@ pushd "target/${FOLDER}"
   --man1dir="${DEST}/man/man1" --man3dir="${DEST}/man/man3"
 make -j1
 make -j1 install
-#QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc" "${DEST}/bin/cpan" Module::Build
 popd
 }
 
@@ -26,14 +25,13 @@ local VERSION="0.500"
 local FOLDER="inc-latest-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
 local URL="http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/${FILE}"
-export QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc"
-export XPERL="${HOME}/xtools/perl5/5n"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
-"${XPERL}/bin/perl" Makefile.PL
+QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc" "${DEST}/bin/perl" Makefile.PL
 make
 make install
+popd
 }
 
 ### MODULE::BUILD ###
@@ -42,14 +40,13 @@ local VERSION="0.4214"
 local FOLDER="Module-Build-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
 local URL="http://www.cpan.org/authors/id/L/LE/LEONT/${FILE}"
-export QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc"
-export XPERL="${HOME}/xtools/perl5/5n"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
-"${XPERL}/bin/perl" Makefile.PL
+QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc" "${DEST}/bin/perl" Makefile.PL
 make
 make install
+popd
 }
 
 ### BUILD ###
