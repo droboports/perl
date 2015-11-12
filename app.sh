@@ -25,10 +25,11 @@ local VERSION="0.500"
 local FOLDER="inc-latest-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
 local URL="http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/${FILE}"
+export QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
-QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc" "${DEST}/bin/perl" Makefile.PL
+"${DEST}/bin/perl" Makefile.PL
 make
 make install
 popd
@@ -40,10 +41,11 @@ local VERSION="0.4214"
 local FOLDER="Module-Build-${VERSION}"
 local FILE="${FOLDER}.tar.gz"
 local URL="http://www.cpan.org/authors/id/L/LE/LEONT/${FILE}"
+export QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc"
 
 _download_tgz "${FILE}" "${URL}" "${FOLDER}"
 pushd "target/${FOLDER}"
-QEMU_LD_PREFIX="${TOOLCHAIN}/${HOST}/libc" "${DEST}/bin/perl" Makefile.PL
+"${DEST}/bin/perl" Makefile.PL
 make
 make install
 popd
